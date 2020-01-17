@@ -3,9 +3,19 @@
            https://api.github.com/users/<your name>
 */
 
-axios.get('https://api.github.com/users/ranccm').then(response => {
-  console.log(response, 'hello');
+axios
+.get('https://api.github.com/users/ranccm')
+
+.then(response => {
+  const info = response.data;
+  const cardInfo = createCard(info);
+  entryPoint.append(cardInfo)
+
 })
+
+.catch(error => {
+  console.log("dangit", error);
+});
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -18,9 +28,9 @@ axios.get('https://api.github.com/users/ranccm').then(response => {
            create a new component and add it to the DOM as a child of .cards
 */
 
-
-
 const entryPoint = document.querySelector('.cards');
+
+
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
           , manually find some other users' github handles, or use the list found 
@@ -31,7 +41,28 @@ const entryPoint = document.querySelector('.cards');
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell',
+];
+
+
+followersArray.forEach(e => {
+  axios.get(`https://api.github.com/users/${e}`)
+  .then(response => {
+    const info = response.data;
+    const cardInfo = createCard(info);
+    entryPoint.append(cardInfo);
+  })
+  .catch(err => {
+    console.log('This is an error');
+  });
+});
+
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -80,14 +111,24 @@ function createCard(obj){
   name.classList.add('name');
   username.classList.add('username');
 
+  //content
   image.src = obj.avatar_url;
-
+  name.textContent = obj.name;
+  username.textContent = obj.login;
+  location.textContent = obj.location;
+  profile.textContetent = 'Profile: ';
+  profLink.setAttribute('href', obj.html_url)
+  profLink.textContent = obj.html_url;
+  followers.textContent = obj.followers;
+  following.textContent = obj.following;
+  bio.textContent = obj.bio;
+  
   //appending
   newCard.append(image);
   newCard.append(cardInfo);
 
   cardInfo.append(name);
-  cardInf.append(username);
+  cardInfo.append(username);
   cardInfo.append(location);
   cardInfo.append(profile);
   cardInfo.append(followers);
@@ -96,15 +137,5 @@ function createCard(obj){
 
   profile.append(profLink);
 
-  name.textContent = obj.name;
-  username.textContent = obj.username;
-  location.textContent = `${obj.location}`;
-  profile.textContetent = 'Profile: ';
-  link.href = obj.html_url;
-  followers.textContent = obj.followers;
-  following.textContent = obj.following;
-
   return newCard;
 }
-
-console.log(createCard)
