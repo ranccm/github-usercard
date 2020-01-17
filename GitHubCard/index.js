@@ -3,6 +3,10 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get('https://api.github.com/users/ranccm').then(response => {
+  console.log(response, 'hello');
+})
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -14,6 +18,9 @@
            create a new component and add it to the DOM as a child of .cards
 */
 
+
+
+const entryPoint = document.querySelector('.cards');
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
           , manually find some other users' github handles, or use the list found 
@@ -53,3 +60,51 @@ const followersArray = [];
   luishrd
   bigknell
 */
+function createCard(obj){
+  //create elements
+  const newCard = document.createElement('div');
+  const image = document.createElement('img')
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const profLink = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+  
+  //add class
+  newCard.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  username.classList.add('username');
+
+  image.src = obj.avatar_url;
+
+  //appending
+  newCard.append(image);
+  newCard.append(cardInfo);
+
+  cardInfo.append(name);
+  cardInf.append(username);
+  cardInfo.append(location);
+  cardInfo.append(profile);
+  cardInfo.append(followers);
+  cardInfo.append(following);
+  cardInfo.append(bio);
+
+  profile.append(profLink);
+
+  name.textContent = obj.name;
+  username.textContent = obj.username;
+  location.textContent = `${obj.location}`;
+  profile.textContetent = 'Profile: ';
+  link.href = obj.html_url;
+  followers.textContent = obj.followers;
+  following.textContent = obj.following;
+
+  return newCard;
+}
+
+console.log(createCard)
